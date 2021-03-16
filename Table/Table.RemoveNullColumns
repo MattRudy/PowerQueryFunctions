@@ -1,0 +1,9 @@
+let
+    Source = Table.ColumnNames(#"Source_BLANKTEST_DATASET"),
+    #"Converted to Table" = Table.FromList(Source, Splitter.SplitByNothing(), null, null, ExtraValues.Error),
+    #"Renamed Columns" = Table.RenameColumns(#"Converted to Table",{{"Column1", "ColumnLabels"}}),
+    #"Added Test" = Table.AddColumn(#"Renamed Columns", "Test", each Text.Trim(List.Max(Table.ToList(Table.TransformColumnTypes(Table.SelectColumns(#"Source_BLANKTEST_DATASET",[ColumnLabels]),{[ColumnLabels], type text})))) = ""),
+    #"Filtered to Blank Columns" = Table.SelectRows(#"Added Test", each ([Test] = true)),
+    #"Convert Back to List" = #"Filtered to Blank Columns"[ColumnLabels]
+in
+    #"Convert Back to List"
