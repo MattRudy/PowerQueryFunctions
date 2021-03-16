@@ -1,3 +1,5 @@
+//Helper Query
+
 let
     Source = Table.ColumnNames(#"Source_BLANKTEST_DATASET"),
     #"Converted to Table" = Table.FromList(Source, Splitter.SplitByNothing(), null, null, ExtraValues.Error),
@@ -7,3 +9,9 @@ let
     #"Convert Back to List" = #"Filtered to Blank Columns"[ColumnLabels]
 in
     #"Convert Back to List"
+
+//Output Query
+let
+    Source = Table.RemoveColumns(#"Source_BLANKTEST_DATASET",#"Test_BLANKTEST_DATASET")
+in
+    Source
